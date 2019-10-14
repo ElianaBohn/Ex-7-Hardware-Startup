@@ -13,14 +13,21 @@ from pidev.MixPanel import MixPanel
 from pidev.kivy.PassCodeScreen import PassCodeScreen
 from pidev.kivy import DPEAButton
 
+import spidev
+import os
+from time import sleep
+import RPi.GPIO as GPIO
+from pidev.stepper import stepper
+
 MIXPANEL_TOKEN = "x"
 MIXPANEL = MixPanel("Project Name", MIXPANEL_TOKEN)
 
 SCREEN_MANAGER = ScreenManager()
 MAIN_SCREEN_NAME = 'main'
 ADMIN_SCREEN_NAME = 'admin'
-#s0 = stepper(port=0, micro_steps=32, hold_current=20, run_current=20, accel_current=20, deaccel_current=20,
-#             steps_per_unit=200, speed=2)
+spi = spidev.SpiDev()
+s0 = stepper(port=0, micro_steps=32, hold_current=20, run_current=20, accel_current=20, deaccel_current=20,
+             steps_per_unit=200, speed=2)
 class ProjectNameGUI(App):
     """
     Class to handle running the GUI Application
@@ -40,13 +47,22 @@ class MainScreen(Screen):
     """
     Class to handle the main screen and its associated touch events
     """
-    def pressed(self, val):
+    def toggle_pressed(self, val):
         if val == "Off":
+            s0.run(1, 10000)
             return "On"
-
         else:
+            s0.softStop()
             return "Off"
-    #        s0.softStop()
+    def direction_pressed(self, val):
+        if val == "CW":
+            s0.run(0, 10000)
+            return "CCW"
+        else:
+            s0.run(1, 10000)
+            return "CW"
+
+
     def admin_action(self):
         """
         Hidden admin button touch event. Transitions to passCodeScreen.
@@ -54,9 +70,6 @@ class MainScreen(Screen):
         :return: None
         """
         SCREEN_MANAGER.current = 'passCode'
-    def animation(self):
-        anim = Animation(x=50) + Animation(size=(0, 0), duration=1.)
-        anim.start(self.ids.animation_button)
 
 
 class AdminScreen(Screen):
