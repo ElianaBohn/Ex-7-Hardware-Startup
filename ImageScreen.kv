@@ -1,0 +1,12 @@
+<ImageScreen>:
+    name: 'image'
+    FloatLayout:
+        size_hint: None, None
+
+    ImageButton:
+        #Go back button
+        size: 175, 100
+        source: "../../pidev/kivy/download.png"
+        pos_hint: {"x":0, "top":1}
+        size_hint: 1,1
+        on_press: root.transition_back()

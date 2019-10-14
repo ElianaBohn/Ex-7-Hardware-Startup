@@ -1,0 +1,45 @@
+<MainScreen>:
+    name: 'main'
+    FloatLayout:
+        size_hint: None, None
+
+    Button:
+        id: toggle_button
+        text: "Off"
+        size: 100,100
+        background_color: (0, 0, 0, 1.0)
+        font_name: 'Roboto-Bold'
+        text_size: self.size
+        outline_width: 5
+        outline_color: (1,1,1,1)
+        halign: 'center'
+        valign: 'middle'
+        font_size: 60
+        pos_hint: {"x":.8, "top":.2}
+        size_hint: 0.2,0.2
+        color: 0,0,1,1
+        on_press: toggle_button.text = root.pressed(toggle_button.text)
+
+    BoxLayout:
+        Slider:
+            id: slider
+            size_hint: 0.3,0.3
+            pos_hint: {"x":.4, "top":.65}
+            min: 0
+            max: 100
+            step: 1
+
+        Label:
+            text: str(slider.value)
+            size: 100,100
+            background_color: (0, 0, 0, 1.0)
+            font_name: 'Roboto-Bold'
+            text_size: self.size
+            outline_width: 5
+            outline_color: (1,1,1,1)
+            halign: 'center'
+            valign: 'middle'
+            font_size: 40
+            pos_hint: {"x":.2, "top":.6}
+            size_hint: 0.2,0.2
+            color: 0,0,1,1
